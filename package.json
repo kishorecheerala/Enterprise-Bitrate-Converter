@@ -13,7 +13,8 @@
     "react-dom": "^19.2.0",
     "@google/genai": "^1.29.1",
     "@ffmpeg/util": "^0.12.1",
-    "@ffmpeg/ffmpeg": "^0.12.6"
+    "@ffmpeg/ffmpeg": "^0.12.6",
+    "buffer": "^6.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
