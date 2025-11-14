@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { FFmpeg } from '@ffmpeg/ffmpeg';
 
 const FFMPEG_CORE_VERSION = "0.12.6";
 
@@ -13,12 +12,16 @@ export const useFFmpeg = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [progress, setProgress] = useState(0);
   const [log, setLog] = useState<string[]>([]);
-  const ffmpegRef = useRef<FFmpeg | null>(new FFmpeg());
+  const ffmpegRef = useRef<any | null>(null);
 
   const load = async () => {
+    // This function should only be called after confirming window.FFmpeg exists
+    if (!ffmpegRef.current) {
+        const { FFmpeg } = (window as any).FFmpeg;
+        ffmpegRef.current = new FFmpeg();
+    }
     const ffmpeg = ffmpegRef.current;
-    if (!ffmpeg) return;
-
+    
     if (ffmpeg.loaded) {
         setIsLoaded(true);
         return;
@@ -26,11 +29,11 @@ export const useFFmpeg = () => {
 
     const baseURL = `https://aistudiocdn.com/@ffmpeg/core-mt@${FFMPEG_CORE_VERSION}/dist/esm`;
     
-    ffmpeg.on('log', ({ message }) => {
+    ffmpeg.on('log', ({ message }: { message: string }) => {
         setLog((prev) => [...prev, message]);
     });
     
-    ffmpeg.on('progress', ({ progress }) => {
+    ffmpeg.on('progress', ({ progress }: { progress: number }) => {
         setProgress(Math.round(progress * 100));
     });
 
@@ -47,10 +50,17 @@ export const useFFmpeg = () => {
     }
   };
   
-  // Eslint disable is needed here as we only want to run this once.
-  // We are managing the ffmpeg instance in a ref, so we don't need to re-run this effect.
   useEffect(() => {
-    load();
+    // This effect ensures we wait for the FFmpeg script to be loaded on the window object
+    // before we attempt to initialize it, preventing a race condition.
+    const checkForFFmpeg = () => {
+      if ((window as any).FFmpeg) {
+        load();
+      } else {
+        setTimeout(checkForFFmpeg, 100);
+      }
+    };
+    checkForFFmpeg();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
