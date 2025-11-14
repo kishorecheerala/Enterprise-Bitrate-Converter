@@ -1,8 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { toBlobURL } from '@ffmpeg/util';
 
 const FFMPEG_CORE_VERSION = "0.12.6";
+
+const toBlobURL = async (url: string, mimeType: string): Promise<string> => {
+  const response = await fetch(url);
+  const buffer = await response.arrayBuffer();
+  return URL.createObjectURL(new Blob([buffer], { type: mimeType }));
+};
 
 export const useFFmpeg = () => {
   const [isLoaded, setIsLoaded] = useState(false);
