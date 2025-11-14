@@ -1,0 +1,5 @@
+{
+  "name": "Enterprise Bitrate Converter",
+  "description": "An offline video bitrate converter designed for enterprise use, ensuring compliance with streaming service specifications like Netflix. It uses in-browser WebAssembly for secure, serverless transcoding.",
+  "requestFramePermissions": []
+}

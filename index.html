@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enterprise Bitrate Converter</title>
+  <!--
+    These headers are required for SharedArrayBuffer, which is used by ffmpeg.wasm for multithreading.
+    They enable cross-origin isolation.
+  -->
+  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand-blue': '#0071eb',
+            'brand-dark': '#1a1a1a',
+            'brand-gray': '#2d2d2d',
+            'brand-light-gray': '#4a4a4a',
+            'brand-text': '#f0f0f0',
+          },
+        },
+      },
+    }
+  </script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.29.1",
+    "@ffmpeg/util": "https://aistudiocdn.com/@ffmpeg/util@^0.12.2",
+    "@ffmpeg/ffmpeg": "https://aistudiocdn.com/@ffmpeg/ffmpeg@^0.12.15"
+  }
+}
+</script>
+</head>
+<body class="bg-brand-dark text-brand-text antialiased">
+  <div id="root"></div>
+</body>
+</html>
